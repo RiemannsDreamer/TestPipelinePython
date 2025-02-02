@@ -30,8 +30,10 @@ jobs:
           pip install -r requirements.txt
           pip install flake8 black isort mypy bandit
 
-      - name: Run Flake8
-        run: flake8 .
+      - name: Activate Virtual Environment + flake 8
+        run: |
+          source venv/bin/activate
+          flake8 .
 
       - name: Run Black Check
         run: black --check .
