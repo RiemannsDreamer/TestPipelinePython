@@ -30,22 +30,30 @@ jobs:
           pip install -r requirements.txt
           pip install flake8 black isort mypy bandit
 
-      - name: Activate Virtual Environment + flake 8
+      - name: Run Flake8
         run: |
-          source venv/bin/activate
+          source venv/bin/activate  
           flake8 .
 
       - name: Run Black Check
-        run: black --check .
+        run: |
+          source venv/bin/activate
+          black --check .
 
       - name: Run Isort Check
-        run: isort . --check-only
+        run: |
+          source venv/bin/activate
+          isort . --check-only
 
       - name: Run Mypy Type Checking
-        run: mypy .
+        run: |
+          source venv/bin/activate
+          mypy .
 
       - name: Run Bandit Security Check
-        run: bandit -r .
+        run: |
+          source venv/bin/activate
+          bandit -r .
 
   security:
     name: Security & Dependency Checks
@@ -66,7 +74,9 @@ jobs:
           pip install safety
 
       - name: Run Security Audit
-        run: safety check
+        run: |
+          source venv/bin/activate  
+          safety check
 
   tests:
     name: Run Unit & Integration Tests
@@ -119,6 +129,7 @@ jobs:
 
       - name: Run SonarCloud Analysis
         run: |
+          source venv/bin/activate
           sonar-scanner -Dsonar.organization=my-org -Dsonar.projectKey=my-project -Dsonar.python.version=3.10
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
